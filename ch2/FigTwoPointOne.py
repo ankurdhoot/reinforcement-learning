@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-class NArmedTestbed:
+class NArmedBandit:
     """ Simulates the n-armed bandit problem as given in Section 2.1.
     Running NArmedTestbed.generate_plots() will reproduce figure 2.1."""
 
@@ -19,7 +19,7 @@ class NArmedTestbed:
         self.num_action_plays = np.zeros(self.n)
         # reward returned on each play, aggregated over all runs
         self.rewards_per_play = np.zeros(self.num_plays)
-        #counts whether the optimal action was played on the ith play, aggregated over all runs
+        # counts whether the optimal action was played on the ith play, aggregated over all runs
         self.optimal_action_played = np.zeros(self.num_plays)
 
     def reset(self):
@@ -101,7 +101,7 @@ class NArmedTestbed:
         num_runs = 2000
         num_plays = 1000
         for epsilon in epsilons:
-            sim = NArmedTestbed(n=num_actions, num_plays=num_plays, num_runs=num_runs, epsilon=epsilon)
+            sim = NArmedBandit(n=num_actions, num_plays=num_plays, num_runs=num_runs, epsilon=epsilon)
             average_rewards_per_play, optimal_action_percentage = sim.run_simulation()
             rewards.append(average_rewards_per_play)
             actions.append(optimal_action_percentage)
