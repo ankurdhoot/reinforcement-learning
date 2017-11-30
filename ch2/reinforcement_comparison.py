@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import math
 
+# TODO: Split all these classes into their own files
 class NArmedBandit:
     """ Simulates the n-armed bandit problem as given in Section 2.1.
     Running NArmedTestbed.generate_plots() will reproduce figure 2.1."""
@@ -16,15 +17,15 @@ class NArmedBandit:
         self.action_values = np.random.normal(size=self.n)
         # reward returned on each play, aggregated over all runs
         self.rewards_per_play = np.zeros(self.num_plays)
-        # counts whether the optimal action was played on the ith play, aggregated over all runs
+        # counts whether the optimal action was played on the ith play
         self.optimal_action_played = np.zeros(self.num_plays)
         # number of times each action has been played
         self.num_action_plays = np.zeros(self.n)
 
     def play_action(self, action):
-        """ Returns the reward for the action.
-        Updates the optimal_action_played and
-        rewards_per_play arrays."""
+        """ Increments the action count for this action.
+        Updates the optimal_action_played and rewards_per_play arrays.
+        Returns the reward for the action."""
         self.increment_action_count(action)
         reward = self.get_reward(action)
         self.update_reward_per_play(reward)
@@ -54,6 +55,8 @@ class NArmedBandit:
         self.rewards_per_play[self.play_num] = reward
 
     # TODO: Change to use abc module
+    # TODO: Maybe rename to change_environment_estimates
+    # (parameters other than the reward may need to be updated)?
     def update_reward_estimates(self, action, reward):
         """ Updates the reward estimates for the given action
         using the incremental update implementation."""
@@ -61,6 +64,8 @@ class NArmedBandit:
 
     def get_action_to_play(self):
         raise NotImplementedError("Must implement get_action_to_play.")
+
+    # TODO: Make reset() an abstract method?
 
     def run_simulation(self):
         """Plays all the plays and returns the
@@ -98,7 +103,8 @@ class EpsilonGreedy(NArmedBandit):
 
 
 class EpsilonGreedyStationary(EpsilonGreedy):
-    """ Uses the average update rule for reward estimates."""
+    """ Uses the average update rule for reward estimates.
+    Intended for use when the action values are stationary. """
     def __init__(self, n, num_plays, initial_estimate, epsilon):
         super().__init__(n, num_plays, initial_estimate, epsilon)
 
@@ -110,8 +116,10 @@ class EpsilonGreedyStationary(EpsilonGreedy):
         new_estimate = old_estimate + 1 / self.num_action_plays[action] * (reward - old_estimate)
         self.action_value_estimates[action] = new_estimate
 
+
 class EpsilonGreedyNonStationary(EpsilonGreedy):
-    """ Uses a constant step size parameter, alpha, for reward estimates."""
+    """ Uses a constant step size parameter, alpha, for reward estimates.
+    Desirable for nonstationary environments. """
 
     def __init__(self, n, num_plays, initial_estimate, epsilon, alpha):
         super().__init__(n, num_plays, initial_estimate, epsilon)
@@ -124,6 +132,7 @@ class EpsilonGreedyNonStationary(EpsilonGreedy):
         old_estimate = self.action_value_estimates[action]
         new_estimate = old_estimate + self.alpha * (reward - old_estimate)
         self.action_value_estimates[action] = new_estimate
+
 
 class ReinforcementComparison(NArmedBandit):
     def __init__(self, n, num_plays, initial_reward, alpha, beta):
