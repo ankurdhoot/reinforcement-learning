@@ -61,8 +61,8 @@ def generate_plots():
     rewards, optimal_actions = simulator.simulate()
     f, (ax1, ax2) = plt.subplots(2)
 
-    ax1.plot(rewards, label=r'$\epsilon$=' + str(epsilon) + r'$ \alpha=1/k$')
-    ax2.plot(optimal_actions, label=r'$\epsilon$=' + str(epsilon) + r'$\alpha=1/k$')
+    ax1.plot(rewards, label=r'$\epsilon=.1 \alpha=1/k$')
+    ax2.plot(optimal_actions, label=r'$\epsilon=.1 \alpha=1/k$')
 
     reinforcement_comparison = ReinforcementComparison(n, num_plays, initial_reward, alpha, beta)
     simulator = Simulator(num_plays, num_runs, reinforcement_comparison)
