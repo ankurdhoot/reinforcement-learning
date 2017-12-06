@@ -158,7 +158,7 @@ class CarRentalEnvironment:
         for i in range(axis1):
             for j in range(axis2):
                 Z[i][j] = actions[(i, j)]
-        CS = plt.contour(X, Y, Z, levels=levels)
+        CS = plt.contourf(X, Y, Z, levels=levels)
         plt.clabel(CS, inline=1, fontsize=10)
         plt.xlabel('#Cars at second location')
         plt.ylabel('#Cars at first location')
