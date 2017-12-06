@@ -98,7 +98,7 @@ class CarRentalEnvironment:
                         assert l1_remaining_cars >= 0 and l2_remaining_cars >= 0
                         new_state = (l1_remaining_cars, l2_remaining_cars)
                         # charge for action instead?
-                        # TODO: change to cars_to_move
+                        # TODO: change to cars_to_move?
                         total_reward = reward_l1 + reward_l2 - self.transfer_cost * abs(action)
                         # store probabilities in a dictionary for significant speed up
                         prob = self.probs[self.l1_checkout_mean][num_checkouts_l1] \
