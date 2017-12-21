@@ -10,7 +10,7 @@ class Blackjack:
     To replicate the results in the book:
     b = Blackjack(20, 500000)
     b.simulate()
-    b.generate_plots()
+    b.generate_plot()
     """
     # TODO: replace all the numbers with appropriate variables
     def __init__(self, policy, num_episodes):
@@ -48,7 +48,8 @@ class Blackjack:
 
     def draw_card(self):
         # 1 is ace, 10 is face card
-        return random.randint(1, 10)
+        card = random.randint(1, 13)
+        return min(card, 10)
 
     def play_episode(self):
         states = []
@@ -85,7 +86,6 @@ class Blackjack:
 
     def play_till_decision(self, state):
         player_sum, usable_ace, dealer_card = state
-        # TODO: make 12 a class variable instead of some magic number
         while player_sum < 12:
             card = self.draw_card()
             assert player_sum + card <= self.goal
@@ -102,7 +102,6 @@ class Blackjack:
         player_sum, usable_ace, dealer_card = state
         assert 12 <= player_sum <= self.goal
         card = self.draw_card()
-        # TODO: this logic can be restructured
         if player_sum + card <= self.goal:
             player_sum += card
         elif usable_ace:
